@@ -9,6 +9,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/dogs", (req, res, next) => {
+  console.log(req.requestTime);
+  console.log("I LOVE DOGS!!!!");
+  next();
+});
+
 // app.use((req, res, next) => {
 //   console.log("THIS IS MY FIRST MIDDLEWARE!");
 //   next();
@@ -25,6 +31,10 @@ app.get("/", (req, res) => {
 
 app.get("/dogs", (req, res) => {
   res.send("WOOF WOOF!!!");
+});
+
+app.use((req, res) => {
+  res.status(404).send("NOT FOUND 404");
 });
 
 app.listen(7000, () => {

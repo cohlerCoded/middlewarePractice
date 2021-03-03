@@ -2,6 +2,14 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 
+const verifyPassword = (req, res, next) => {
+  const { password } = req.query;
+  if (password === "chickennuggets") {
+    next();
+  }
+  res.send("Sorry, you need to enter a password!!!");
+};
+
 //app.use(morgan("tiny"));
 app.use((req, res, next) => {
   req.requestTime = Date().toString();
@@ -31,6 +39,12 @@ app.get("/", (req, res) => {
 
 app.get("/dogs", (req, res) => {
   res.send("WOOF WOOF!!!");
+});
+
+app.get("/secret", verifyPassword, (req, res) => {
+  res.send(
+    "I wear my sunglasses at so I can, so I can watch you weave then breathe your story lines"
+  );
 });
 
 app.use((req, res) => {

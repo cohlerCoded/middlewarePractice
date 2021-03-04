@@ -56,6 +56,20 @@ app.use((req, res) => {
   res.status(404).send("NOT FOUND 404");
 });
 
+app.use((err, req, res, next) => {
+  console.log(
+    "******************************************************************"
+  );
+  console.log(
+    "************************ERROR*************************************"
+  );
+  console.log(
+    "******************************************************************"
+  );
+  //res.status(500).send("OH NO WE GOT AN ERROR!!!");
+  next(err);
+});
+
 app.listen(7000, () => {
   console.log("listening on port 7000");
 });

@@ -7,7 +7,8 @@ const verifyPassword = (req, res, next) => {
   if (password === "chickennuggets") {
     next();
   }
-  res.send("Sorry, you need to enter a password!!!");
+  //res.send("Sorry, you need to enter a password!!!");
+  throw new Error("Password required!!!");
 };
 
 //app.use(morgan("tiny"));
@@ -21,6 +22,10 @@ app.use("/dogs", (req, res, next) => {
   console.log(req.requestTime);
   console.log("I LOVE DOGS!!!!");
   next();
+});
+
+app.get("/error", (req, res) => {
+  chicken.fly();
 });
 
 // app.use((req, res, next) => {

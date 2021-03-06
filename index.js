@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const AppError = require("./AppError");
 
 const verifyPassword = (req, res, next) => {
   const { password } = req.query;
@@ -8,7 +9,7 @@ const verifyPassword = (req, res, next) => {
     next();
   }
   //res.send("Sorry, you need to enter a password!!!");
-  throw new Error("Password required!!!");
+  throw new AppError("Password required!!!", 401);
 };
 
 //app.use(morgan("tiny"));
@@ -52,22 +53,30 @@ app.get("/secret", verifyPassword, (req, res) => {
   );
 });
 
+app.get("/admin", (req, res) => {
+  throw new AppError("YOU AINT NO ADMIN", 403);
+});
+
 app.use((req, res) => {
   res.status(404).send("NOT FOUND 404");
 });
 
+// app.use((err, req, res, next) => {
+//   console.log(
+//     "******************************************************************"
+//   );
+//   console.log(
+//     "************************ERROR*************************************"
+//   );
+//   console.log(
+//     "******************************************************************"
+//   );
+//   //res.status(500).send("OH NO WE GOT AN ERROR!!!");
+//   next(err);
+// });
 app.use((err, req, res, next) => {
-  console.log(
-    "******************************************************************"
-  );
-  console.log(
-    "************************ERROR*************************************"
-  );
-  console.log(
-    "******************************************************************"
-  );
-  //res.status(500).send("OH NO WE GOT AN ERROR!!!");
-  next(err);
+  const { status = 500, message = "OH NO ERROR!!!" } = err;
+  res.status(status).send(`${message} ${status}`);
 });
 
 app.listen(7000, () => {
